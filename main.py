@@ -14,7 +14,7 @@ def main():
     if permission == False:
         con = sqlite3.connect('main_Database.db')
         createTableFormat()
-
+        
     adminOrNot = input("are you a worker or a admin?| type 'admin' or 'worker': ")
 
     if adminOrNot == "admin":
