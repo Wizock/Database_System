@@ -1,5 +1,5 @@
 from api import *
-
+from session import *
 
 def login_attemp_admin():   
     con = connect()
@@ -11,7 +11,8 @@ def login_attemp_admin():
         resultsPassword = cursor.fetchall()
         if resultsPassword:
             print("Welcome :" + username)
-            break
+            beginAdmin()
+            
         print("Username or Password not found")
         print("try again")
 

@@ -1,32 +1,112 @@
-'''
-this file is responsible for creating the session of the logged in user
+import random
+import string
+from api import *
 
-this script will enable functions that correlate to the privledge and possitoin of a user
+positions = ["grills","front","assembly","drive_through","cleaning"]
+connection = connect()
 
-there are 3 main positions, 
-    - worker
-    - manager
-    - admin
+def beginAdmin():
+    regOrDel = input("would you like to edit or delete a employee:")
+    if regOrDel == "edit":
+        edit()
+    if regOrDel == "delete":
+        delete()
 
-a worker can only login and begin thier shift which will set thier onJob status to thier Yes or No
+def userName():
+    for i in range(0,3):
+        userName = str(register_firstName[i]+str(random.randint(0,999))+str(random.randint(0,999))+str(random.randint(0,999)))
+    return userName
 
-a manager can see who is working and where and see how much they will make this shift, they may have just started
-but the prejudice is that they will complete thier shift and calculate thier wage accordingly
+def password():
+    # Random string with the combination of lower and upper case
+    letters = string.ascii_letters
+    result_str = ''.join(random.choice(letters) for i in range(3))+str(random.randint(0,3))+str(random.randint(0,999))+str(random.randint(0,999))
+    return result_str
 
-the admin has the ability to create or delete reccords. 
+def calculateWage():
+    payingFactor = 20
+    workingTime = 9
+    age = register_age
+    positionValue = 10
+    position = list(register_position)
+    for Positions in positions:
+        for i in range(0,len(Positions)):
+            if register_position == positions[0]:
+                positionValue += 25
+            elif register_position == positions[1]:
+                positionValue += 29
+            elif register_position == positions[2]:
+                positionValue += 18
+            elif register_position == positions[3]:
+                positionValue += 15
+            elif register_position == positions[4]:
+                positionValue += 26
+    wage = int(age*payingFactor/workingTime+positionValue)
+    return wage
 
---views--
-worker:
-    the worker can login and be asked to loggout inorder to begin his shift
-    once the worker has logged in, their shift has begun for 5 seconds a peice but the time has been simplified to 5 seconds
+def generateId():
+    currentID = list(connection.execute("SELECT employeeID FROM workers"))
+    for i in range(0,len(currentID)):
+        currentID[i] = currentID[i]+1
 
-manager:
-    the manager can see what employee has logged in for a job
-    the manager can see how much each employee can make
-    the manager gets to see the tables in console
+    return currentID
 
-admin:
-    the admin can type "delete" or "register" a worker
-    the admin can also create managers
-    
-'''
+def delete():
+    employees = list(connection.execute("SELECT firstName FROM workers"))
+    position = list(connection.execute("SELECT position FROM workers"))
+    wage = list(connection.execute("SELECT wage FROM workers"))
+    employeeID = list(connection.execute("SELECT employeeID FROM workers"))
+    for i in range(0,len(employees)):
+        print(employeeID[i]+":"+employees[i]+":"+position[i]+":"+wage[i])
+    employeeToDel = int(input("Which employee would you like to delete? :"))
+    connection.execute("DELETE ? FROM workers"),(employees[employeeToDel])
+
+
+def edit():
+    global register_firstName, register_lastName, register_position,register_age,register_position
+
+    register_firstName = input("enter Employee's First Name:")
+    register_lastName = input("enter Employee's Last Name:")
+    register_email = input("Enter Employee's email:")
+    # make User name primary on both tables
+    register_userName  = userName()
+    register_password = password()
+    register_age = int(input("Enter Employee's age:"))
+    register_position = input("Enter the assigned Employee's position:")
+    if register_position not in positions:
+        print("this position is not valid")
+        register_position = input("Enter the assigned Employee's position:")
+    register_Wage = calculateWage()
+    register_employeeID = generateId()
+    registerNother = input("would you like to register another worker? | type: 'yes' or 'no' :")
+    if registerNother == "yes":
+        edit()
+    if registerNother == 'no':
+        connection.execute("INSERT INTO workers (firstName,lastName,email,userName,password,Age,Wage,position,employeeID) VALUES (?,?,?,?,?,?,?,?)",(register_lastName,register_email,register_userName,register_password,register_age,register_Wage,register_position,register_employeeID))
+    again = input("would you like to logout? :")
+    if again == "yes":
+        main()
+    elif again == 'no':
+        print("you have been logged out")
+        main()
+
+
+class Manager_session:
+    def __init__(self):
+        self.connection = connect()
+        self.SessionTime = clock()
+    def begin(self):
+        while self.SessionTime < 25:
+            pass
+    def render_session(self):
+        pass
+
+class Worker_session:
+    def __init__(self):
+        self.connection = connect()
+        self.SessionTime = clock()
+    def begin(self):
+        while self.SessionTime < 25:
+            pass
+    def render_session(self):
+        pass

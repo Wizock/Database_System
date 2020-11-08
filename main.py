@@ -1,11 +1,11 @@
 from api import *
 from login import *
+from session import * 
 import sqlite3
 
 def main():
     
     permission = checkIfEmpty()
-    status = status
 
     if permission == True:
         con = connect()
@@ -18,17 +18,29 @@ def main():
     adminOrNot = input("are you a worker or a admin?| type 'admin' or 'worker': ")
 
     if adminOrNot == "admin":
+        
         print("please Login:\n")
         login_attemp_admin()
-        status = adminOrNot
+
 
     if adminOrNot == 'worker':
         print("please Login:\n")
-        login_attemp_workers()
-        status = adminOrNot
-    if status == 'admin':
-
-    
+        login_attemp_workers()    
 if __name__=="__main__":
     main()
+
+admin
+
+WizockAdmin
+Admin123
+
+Rohaan
+
+Ahmed
+
+rahm0@eq.edu.au
+
+17
+
+grills
 
