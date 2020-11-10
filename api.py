@@ -7,37 +7,12 @@ def admin_register():
     try:
         con.execute('''
             INSERT INTO Admin (email,userName,password) VALUES (?,?,?)
-        ''',("Wizock.Admin@mail.com","WizockAdmin","Admin123"))
+        ''',("Wizock.Admin@mail.com","admin","admin"))
         con.commit()
         con.close()
         print("your Admin account has been created :)")
     except Error as e:
         print(e)
-
-
-def user_register():
-
-    con = connect()
-    try:
-        firstName = str(input("enter your first name:"))
-        lastName =  str(input("enter your last name:"))
-        emailAdd =  str(input("enter your email address:"))
-        userName =  str(input("enter your desired username:"))
-        password =  str(input("enter your desired password:"))
-        con.execute('''
-        INSERT INTO Users (firstName,lastName,email,userName,password)
-        VALUES (?,?,?,?,?)''',
-        (firstName, lastName, emailAdd,userName,password)
-        )
-        con.execute('''
-            INSERT INTO Admin (email,userName,password) VALUES (?,?,?)
-        ''',("Wizock.Admin@mail.com","WizockAdmin","Admin123"))
-        con.commit()
-        con.close()
-        print("your account has been created :)")
-    except Error as e:
-        print(e)
-
 
 def createTableFormat():
     conn1 = connect()
@@ -49,12 +24,11 @@ def createTableFormat():
                 email varchar(255),
                 userName varchar(255),
                 password varchar(255),
-                shiftStatus boolean,
                 Age int,
                 Wage int,
                 position varchar(255),
-                employeeID INT,
-                FOREIGN KEY (employeeID) REFERENCES Admin(UserId)
+                UserId int,
+                FOREIGN KEY (UserId) REFERENCES Admin(UserId)
                 )
             ''')
 

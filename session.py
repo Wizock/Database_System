@@ -1,6 +1,7 @@
 import random
 import string
 from api import *
+from main import main
 
 positions = ["grills","front","assembly","drive_through","cleaning"]
 connection = connect()
@@ -44,13 +45,6 @@ def calculateWage():
     wage = int(age*payingFactor/workingTime+positionValue)
     return wage
 
-def generateId():
-    currentID = list(connection.execute("SELECT employeeID FROM workers"))
-    for i in range(0,len(currentID)):
-        currentID[i] = currentID[i]+1
-
-    return currentID
-
 def delete():
     employees = list(connection.execute("SELECT firstName FROM workers"))
     position = list(connection.execute("SELECT position FROM workers"))
@@ -77,18 +71,28 @@ def edit():
         print("this position is not valid")
         register_position = input("Enter the assigned Employee's position:")
     register_Wage = calculateWage()
-    register_employeeID = generateId()
+
+    
+    values = [register_firstName,register_lastName,register_email,register_userName,register_password,register_age,register_position,register_Wage]
+    for i in range(0,len(values)):
+        print(values[i])
     registerNother = input("would you like to register another worker? | type: 'yes' or 'no' :")
     if registerNother == "yes":
+        connection.commit()
         edit()
     if registerNother == 'no':
-        connection.execute("INSERT INTO workers (firstName,lastName,email,userName,password,Age,Wage,position,employeeID) VALUES (?,?,?,?,?,?,?,?)",(register_lastName,register_email,register_userName,register_password,register_age,register_Wage,register_position,register_employeeID))
+        connection.execute('''
+        INSERT INTO workers (firstName,lastName,email,userName,password,Age,Wage,position)
+        VALUES (?,?,?,?,?,?,?,?)
+        ''',
+        (register_firstName,register_lastName,register_email,register_userName,register_password,register_age,register_Wage,register_position))
+        connection.commit()
+        connection.close()
     again = input("would you like to logout? :")
     if again == "yes":
         main()
     elif again == 'no':
-        print("you have been logged out")
-        main()
+        beginAdmin()
 
 
 class Manager_session:

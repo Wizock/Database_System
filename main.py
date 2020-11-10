@@ -10,10 +10,12 @@ def main():
     if permission == True:
         con = connect()
         createTableFormat()
+        admin_register()
 
     if permission == False:
         con = sqlite3.connect('main_Database.db')
         createTableFormat()
+        admin_register()
         
     adminOrNot = input("are you a worker or a admin?| type 'admin' or 'worker': ")
 
@@ -21,26 +23,10 @@ def main():
         
         print("please Login:\n")
         login_attemp_admin()
-
-
     if adminOrNot == 'worker':
         print("please Login:\n")
-        login_attemp_workers()    
+        login_attemp_workers()  
 if __name__=="__main__":
     main()
 
-admin
-
-WizockAdmin
-Admin123
-
-Rohaan
-
-Ahmed
-
-rahm0@eq.edu.au
-
-17
-
-grills
 
