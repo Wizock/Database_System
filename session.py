@@ -72,12 +72,13 @@ def edit():
         register_position = input("Enter the assigned Employee's position:")
     register_Wage = calculateWage()
 
-    
-    values = [register_firstName,register_lastName,register_email,register_userName,register_password,register_age,register_position,register_Wage]
-    for i in range(0,len(values)):
-        print(values[i])
     registerNother = input("would you like to register another worker? | type: 'yes' or 'no' :")
     if registerNother == "yes":
+        connection.execute('''
+        INSERT INTO workers (firstName,lastName,email,userName,password,Age,Wage,position)
+        VALUES (?,?,?,?,?,?,?,?)
+        ''',
+        (register_firstName,register_lastName,register_email,register_userName,register_password,register_age,register_Wage,register_position))
         connection.commit()
         edit()
     if registerNother == 'no':
