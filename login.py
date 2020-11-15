@@ -12,9 +12,9 @@ def login_attemp_admin():
         if resultsPassword:
             print("Welcome :" + username)
             beginAdmin()
-            
-        print("Username or Password not found")
-        print("try again")
+        else:
+            print("Username or Password not found")
+            print("try again")
 
 def login_attemp_workers():   
     con = connect()
@@ -23,9 +23,10 @@ def login_attemp_workers():
         password = input("Enter password:")
         cursor = con.cursor()
         find_user_fromAdmin = cursor.execute(("SELECT * FROM workers WHERE userName = ? AND password = ?"), (username, password))
+        firstName = cursor.execute("SELECT firstName FROM workers WHERE userName = ? ",(username,))
         resultsPassword = cursor.fetchall()
         if resultsPassword:
-            print("Welcome :" + username)
+            print("Welcome :",list(firstName))
             break
         print("Username or Password not found")
         print("try again")

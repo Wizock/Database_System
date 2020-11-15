@@ -42,7 +42,9 @@ def calculateWage():
                 positionValue += 15
             elif register_position == positions[4]:
                 positionValue += 26
+
     wage = int(age*payingFactor/workingTime+positionValue)
+
     return wage
 
 def delete():
@@ -54,6 +56,7 @@ def delete():
         print(employeeID[i]+":"+employees[i]+":"+position[i]+":"+wage[i])
     employeeToDel = int(input("Which employee would you like to delete? :"))
     connection.execute("DELETE ? FROM workers"),(employees[employeeToDel])
+
 
 
 def edit():
@@ -75,7 +78,7 @@ def edit():
     registerNother = input("would you like to register another worker? | type: 'yes' or 'no' :")
     if registerNother == "yes":
         connection.execute('''
-        INSERT INTO workers (firstName,lastName,email,userName,password,Age,Wage,position)
+        INSERT INTO employee_personal (firstName,lastName,email,userName,password,Age,Wage,position)
         VALUES (?,?,?,?,?,?,?,?)
         ''',
         (register_firstName,register_lastName,register_email,register_userName,register_password,register_age,register_Wage,register_position))
@@ -83,7 +86,7 @@ def edit():
         edit()
     if registerNother == 'no':
         connection.execute('''
-        INSERT INTO workers (firstName,lastName,email,userName,password,Age,Wage,position)
+        INSERT INTO employee_personal (firstName,lastName,email,userName,password,Age,Wage,position)
         VALUES (?,?,?,?,?,?,?,?)
         ''',
         (register_firstName,register_lastName,register_email,register_userName,register_password,register_age,register_Wage,register_position))
